@@ -1,33 +1,38 @@
-# Dockerfile para API .NET 9.0
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+# Etapa 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copiar solo los archivos de proyecto primero para aprovechar el cache de Docker
+# Copiar archivos de proyecto
 COPY ["Web/Web.csproj", "Web/"]
-RUN dotnet restore "./Web/Web.csproj"
+COPY ["Business/Business.csproj", "Business/"]
+COPY ["Data/Data.csproj", "Data/"]
+COPY ["Entity/Entity.csproj", "Entity/"]
+COPY ["Utilities/Utilities.csproj", "Utilities/"]
 
-# Copiar el resto del código fuente
+# Restaurar dependencias
+RUN dotnet restore "Web/Web.csproj"
+
+# Copiar todo el código
 COPY . .
-WORKDIR "/src/Web"
-RUN dotnet build "./Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Compilar y publicar
+RUN dotnet publish "Web/Web.csproj" -c Release -o /app/publish
 
-FROM base AS final
+# Etapa 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+
 WORKDIR /app
-COPY --from=publish /app/publish .
 
-# Crear usuario no-root para seguridad
-RUN addgroup --system --gid 1001 dotnetgroup
-RUN adduser --system --uid 1001 --ingroup dotnetgroup dotnetuser
-USER dotnetuser
+# Copiar archivos publicados desde la etapa build
+COPY --from=build /app/publish .
 
+# Configurar puerto dinámico para Render
+ENV ASPNETCORE_URLS=http://+:${PORT:-5000}
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+# Exponer puerto
+EXPOSE 5000
+
+# Comando de inicio
 ENTRYPOINT ["dotnet", "Web.dll"]
