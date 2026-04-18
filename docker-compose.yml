@@ -1,0 +1,73 @@
+services:
+  # ---------------- FRONTEND ----------------
+  frontend:
+    build: 
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    environment:
+      - API_URL=${API_URL:-http://localhost:5000}
+    depends_on:
+      - modelsecurity-api
+    restart: unless-stopped
+    networks:
+      - modelsecurity-network
+
+  # ---------------- API ----------------
+  modelsecurity-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: modelsecurity-api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_HTTP_PORTS=8080
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+
+      # Solo MySQL para simplicidad en producción
+      - ConnectionStrings__MySqlConnection=Server=mysql;Port=3306;Database=${MYSQL_DATABASE:-ModelSecurity};User=root;Password=${MYSQL_ROOT_PASSWORD:-1234567}
+      
+      # JWT Configuration
+      - Jwt__Key=${JWT_KEY:-EsteEsUnSecretoSuperSeguroDeMasDe32Caracteres!!}
+      - Jwt__Issuer=${JWT_ISSUER:-MiApi}
+      - Jwt__Audience=${JWT_AUDIENCE:-MiApiUsuarios}
+      
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - modelsecurity-network
+
+  # ---------------- MYSQL ----------------
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-1234567}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ModelSecurity}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - modelsecurity-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+# ---------------- Volúmenes persistentes ----------------
+volumes:
+  mysql_data:
+
+# ---------------- Red interna ----------------
+networks:
+  modelsecurity-network:
+    driver: bridge

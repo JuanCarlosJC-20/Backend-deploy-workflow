@@ -1,0 +1,15 @@
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\bin\Release\net8.0\Entity.deps.json
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\bin\Release\net8.0\Entity.runtimeconfig.json
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\bin\Release\net8.0\Entity.dll
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\bin\Release\net8.0\Entity.pdb
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.csproj.AssemblyReference.cache
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.AssemblyInfoInputs.cache
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.AssemblyInfo.cs
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.csproj.CoreCompileInputs.cache
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.sourcelink.json
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.dll
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\refint\Entity.dll
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.pdb
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\Entity.genruntimeconfig.cache
+C:\Users\sampf\OneDrive\Desktop\ModelSecurity\Backend\Entity\obj\Release\net8.0\ref\Entity.dll
