@@ -65,7 +65,7 @@ namespace Api.Controllers
             return Ok(new { 
                 message = result.Message,
                 userName = result.UserName
-            });
+            })
         }
 
         // ==========================
